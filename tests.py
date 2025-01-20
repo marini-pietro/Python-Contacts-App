@@ -7,11 +7,11 @@ class TestMyFunction(unittest.TestCase):
     def run_all_tests(self):
         # Run all tests
         self.test_database_setup()
-        self.test_connection_close()
-        self.test_add_contact()
-        self.test_delete_contact()
-        self.test_search_contacts()
+        self.test_add_contact(name=input("Enter name: "), phone=input("Enter phone: "), email=input("Enter email: "), phone_prefix=input("Enter phone prefix: "))
+        self.test_delete_contact(phone_number=input("Enter phone number to delete: "))
+        self.test_search_contacts(name=input("Enter name: "), phone=input("Enter phone: "), email=input("Enter email: "), phone_prefix=input("Enter phone prefix: "))
         self.test_get_all_contacts()
+        self.test_connection_close()
 
     def test_database_setup(self):
         # Test case 1: Check if the database is correctly created
