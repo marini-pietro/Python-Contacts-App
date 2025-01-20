@@ -8,9 +8,9 @@ class TestMyFunction(unittest.TestCase):
         # Run all tests
         self.test_database_setup()
         self.test_connection_close()
-        self.test_add_contact()
-        self.test_delete_contact()
-        self.test_search_contacts()
+        self.test_add_contact(name=input("Enter name: "), phone=input("Enter phone: "), email=input("Enter email: "), phone_prefix=input("Enter phone prefix: "))
+        self.test_delete_contact(phone_number=input("Enter phone number to delete: "))
+        self.test_search_contacts(name=input("Enter name: "), phone=input("Enter phone: "), email=input("Enter email: "), phone_prefix=input("Enter phone prefix: "))
         self.test_get_all_contacts()
 
     def test_database_setup(self):
