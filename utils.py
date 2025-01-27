@@ -69,7 +69,7 @@ def add_contact(name: str, phone: str, phone_prefix:str ) -> int:
         print("Error adding contact: ", ex)
         return 1
 
-def delete_contact(phone_number:str) -> int:
+def delete_contact(name = "") -> int:
     """
     Deletes contact from the database.
     phone_number: str - contact phone number
@@ -80,11 +80,11 @@ def delete_contact(phone_number:str) -> int:
 
     try:
         c = conn.cursor()
-        c.execute("DELETE FROM contacts WHERE phone=?", (phone_number,))
+        c.execute("DELETE FROM contacts WHERE name = ?", (name,))
         conn.commit()
     except sqlite3.Error as ex:
         print("Error deleting contact: ", ex)
-        return 1    
+        return 1
 
 def search_contacts(name='', phone=''):
     """

@@ -1,4 +1,6 @@
 import json
+from tkinter import TclError
+
 import customtkinter as CTk
 from CTkMessagebox import CTkMessagebox as CTkM
 import utils
@@ -19,6 +21,7 @@ baseColor = ("#ebebeb", "#242424")
 cardContent = ("#dbdbdb", "#2b2b2b")
 boxContent = ("#f9f9fa", "#1d1e1e")
 
+utils.setup_db()
 
 def add_contact():
     """
@@ -34,10 +37,16 @@ def add_contact():
             prefisso = prefix[start:end]
             if validate_phone_number(None):
                 #TODO: insert function to add contact to the db
+                utils.add_contact(nameLabel.get(), phoneNumberEntry.get(), prefisso)
                 valid = True
 
     all_contact()
     search_contact()
+
+    nameLabel.delete(0, "end")
+    phonePrefixCombobox.set("Select Prefix")
+    phoneNumberEntry.delete(0, "end")
+    validate_phone_number(None)
 
     if valid:
         CTkM(title="Add Contact", message="Contact added successfully", icon="check")
@@ -81,7 +90,8 @@ def search_contact():
     search = searchEntry.get() if searchEntry.get() != "" else ""
 
     #TODO: insert function to search contact in the db
-    contacts = [("John", "3913064745", "+39")]
+    contacts = utils.search_contacts(name=f"%{search}%")
+    # contacts = [("John", "3913064745", "+39")]
 
     for contact in contacts:
         contact_button = CTk.CTkButton(contactsList, text=contact[0], command=lambda c=contact: show_contact_details(c))
@@ -95,7 +105,8 @@ def all_contact():
         widget.destroy()
 
     #TODO: insert function to get all contacts from the db
-    contacts = [("John", "3913064745", "+39"), ("Mario", "3913064745", "+39"), ("Luigi", "3913064745", "+39")]
+    contacts = utils.get_all_contacts()
+    # contacts = [("John", "3913064745", "+39"), ("Mario", "3913064745", "+39"), ("Luigi", "3913064745", "+39")]
 
     for contact in contacts:
         contact_button = CTk.CTkButton(allContactsList, text=contact[0], command=lambda c=contact: show_contact_details(c))
@@ -108,14 +119,22 @@ def schedule_all_contact():
 
 def delete_contact(contact, window):
     #TODO: insert function to delete contact from the db
-    window.destroy()
+    try:
+        utils.delete_contact(name = contact)
 
-    all_contact()
-    search_contact()
+        CTkM(title="Delete Contact", message="Contact deleted successfully", icon="check")
 
-    CTkM(title="Delete Contact", message="Contact deleted successfully", icon="check")
+        all_contact()
+        search_contact()
+    except Exception as e:
+        print(e)
+        CTkM(title="Delete Contact", message="Error deleting contact", icon="cancel")
+    finally:
+        details_window.attributes("-topmost", False)
+        window.destroy()
 
 def show_contact_details(contact):
+    global details_window
     details_window = CTk.CTkToplevel(root)
     details_window.title(contact[0])
     details_window.geometry("400x300")
@@ -130,7 +149,7 @@ def show_contact_details(contact):
     phone_label = CTk.CTkLabel(details_window, text=f"Phone: {contact[1]}")
     phone_label.pack(pady=10)
 
-    delete_button = CTk.CTkButton(details_window, text="Delete Contact", command=lambda: delete_contact(contact, details_window))
+    delete_button = CTk.CTkButton(details_window, text="Delete Contact", command=lambda: delete_contact(contact[0], details_window))
     delete_button.pack(pady=10)
 
 with open("config/phone_prefixes.json", "r") as file:
