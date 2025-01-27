@@ -1,7 +1,6 @@
 import json
 import customtkinter as CTk
 from CTkMessagebox import CTkMessagebox as CTkM
-from click import command
 
 baseColor = ("#ebebeb", "#242424")
 cardContent = ("#dbdbdb", "#2b2b2b")
@@ -23,6 +22,9 @@ def add_contact():
             if validate_phone_number(None):
                 #TODO: insert function to add contact to the db
                 valid = True
+
+    all_contact()
+    search_contact()
 
     if valid:
         CTkM(title="Add Contact", message="Contact added successfully", icon="check")
@@ -63,7 +65,7 @@ def search_contact():
     for widget in contactsList.winfo_children():
         widget.destroy()
 
-    search = searchEntry.get()
+    search = searchEntry.get() if searchEntry.get() != "" else ""
 
     #TODO: insert function to search contact in the db
     contacts = [("John", "3913064745", "+39")]
@@ -76,8 +78,6 @@ def all_contact():
     """
     Show all contacts in the contacts list.
     """
-    print("All Contacts")
-
     for widget in allContactsList.winfo_children():
         widget.destroy()
 
@@ -88,9 +88,17 @@ def all_contact():
         contact_button = CTk.CTkButton(allContactsList, text=contact[0], command=lambda c=contact: show_contact_details(c))
         contact_button.pack(pady=5)
 
+def schedule_all_contact():
+    all_contact()
+    search_contact()
+    root.after(60000, schedule_all_contact)
+
 def delete_contact(contact, window):
     #TODO: insert function to delete contact from the db
     window.destroy()
+
+    all_contact()
+    search_contact()
 
     CTkM(title="Delete Contact", message="Contact deleted successfully", icon="check")
 
@@ -173,6 +181,6 @@ allContactsList = CTk.CTkScrollableFrame(allC, width=738, height=400, fg_color=b
 allContactsList.pack()
 allContactsList.place(x=4, y=4)
 
-all_contact()
+schedule_all_contact()
 
 root.mainloop()
