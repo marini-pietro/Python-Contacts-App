@@ -24,8 +24,8 @@ def setup_db() -> int:
         c.execute('''CREATE TABLE IF NOT EXISTS contacts( 
                     name TEXT NOT NULL, 
                     phone VARCHAR(10) NOT NULL UNIQUE,
-                    phone_prefix VARCHAR(3) NOT NULL,
-                    email TEXT)
+                    phone_prefix VARCHAR(3) NOT NULL
+                    )
                 ''')
         conn.commit()
     except sqlite3.Error as ex:
@@ -50,12 +50,11 @@ def close_connection() -> int:
         return 1
 
 # Common database queries 
-def add_contact(name: str, phone: str, email:str, phone_prefix:str ) -> int:
+def add_contact(name: str, phone: str, phone_prefix:str ) -> int:
     """
     Adds new contact to the database. 
     name: str - contact name
     phone: str - contact phone number
-    email: str - contact email address
     phone_prefix: str - contact phone number prefix should start with +
 
     return: 0 if the contact is successfully added to the database
@@ -64,7 +63,7 @@ def add_contact(name: str, phone: str, email:str, phone_prefix:str ) -> int:
 
     try:
         c = conn.cursor()
-        c.execute("INSERT INTO contacts (name, phone, email) VALUES (?, ?, ?)", (name, phone, email))
+        c.execute("INSERT INTO contacts (name, phone, email) VALUES (?, ?, ?)", (name, phone))
         conn.commit()
     except sqlite3.Error as ex:
         print("Error adding contact: ", ex)
@@ -87,13 +86,11 @@ def delete_contact(phone_number:str) -> int:
         print("Error deleting contact: ", ex)
         return 1    
 
-def search_contacts(name, phone, email, phone_prefix):
+def search_contacts(name, phone):
     """
     Searches for contacts in the database.
     name: str - contact name
     phone: str - contact phone number
-    email: str - contact email address
-    phone_prefix: str - contact phone number prefix
 
     return: list - list of contacts that match the search criteria
             int - 1 if there is an error searching for contacts (also prints exception to stdout)
@@ -101,7 +98,7 @@ def search_contacts(name, phone, email, phone_prefix):
 
     try:
         c = conn.cursor()
-        c.execute("SELECT * FROM contacts WHERE name LIKE ? OR phone LIKE ? OR email LIKE ? OR phone_prefix LIKE ?", (name, phone, email, phone_prefix))
+        c.execute("SELECT * FROM contacts WHERE name LIKE ? OR phone LIKE ?", (name, phone))
         results = c.fetchall()
         return results
     except sqlite3.Error as ex:
