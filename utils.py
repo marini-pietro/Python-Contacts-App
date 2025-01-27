@@ -24,7 +24,7 @@ def setup_db() -> int:
         c.execute('''CREATE TABLE IF NOT EXISTS contacts( 
                     name TEXT NOT NULL, 
                     phone VARCHAR(10) NOT NULL UNIQUE,
-                    phone_prefix VARCHAR(3) NOT NULL
+                    phone_prefix VARCHAR(10) NOT NULL
                     )
                 ''')
         conn.commit()
@@ -63,7 +63,7 @@ def add_contact(name: str, phone: str, phone_prefix:str ) -> int:
 
     try:
         c = conn.cursor()
-        c.execute("INSERT INTO contacts (name, phone, email) VALUES (?, ?, ?)", (name, phone))
+        c.execute("INSERT INTO contacts (name, phone, phone_prefix) VALUES (?, ?, ?)", (name, phone, phone_prefix))
         conn.commit()
     except sqlite3.Error as ex:
         print("Error adding contact: ", ex)
@@ -86,7 +86,7 @@ def delete_contact(phone_number:str) -> int:
         print("Error deleting contact: ", ex)
         return 1    
 
-def search_contacts(name, phone):
+def search_contacts(name='', phone=''):
     """
     Searches for contacts in the database.
     name: str - contact name

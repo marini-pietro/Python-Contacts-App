@@ -11,3 +11,8 @@ import utils
 #     Search for a contact
 
 # Contacts are stored in a sqlite database.
+ 
+utils.setup_db()
+utils.add_contact("John", "3246362611", "+39")
+
+print(utils.search_contacts(name="John"))
