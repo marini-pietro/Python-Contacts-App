@@ -22,7 +22,7 @@ def setup_db() -> int:
         conn = sqlite3.connect('contacts.db')
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS contacts( 
-                    name TEXT NOT NULL, 
+                    name TEXT UNIQUE NOT NULL, 
                     phone VARCHAR(10) NOT NULL UNIQUE,
                     phone_prefix VARCHAR(10) NOT NULL
                     )
