@@ -1,7 +1,12 @@
-# Python Contacts App
-Simple Python contacts app made to study Git in school.  
-Features:
-	* Modern GUI made in customtkinter<br>
-	* Tests made with UniTest python library<br>
-	* Database made with Sqlite3<br>
-Group: Marini Pietro & Lonardi Samuele
+# Python Contacts App  
+
+A simple Python-based contacts application developed as a school project to study Git.  
+
+## Features  
+- **Modern GUI**: Built using the `customtkinter` library for a clean and user-friendly interface.  
+- **Unit Testing**: Includes comprehensive tests written with the `unittest` Python library.  
+- **SQLite3 Database**: Utilizes SQLite3 for efficient and lightweight data management.  
+
+## Developers  
+This project was created by **Marini Pietro** and **Lonardi Samuele**.  
+
