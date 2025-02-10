@@ -1,9 +1,14 @@
 import json
-from tkinter import TclError
-
-import customtkinter as CTk
-from CTkMessagebox import CTkMessagebox as CTkM
 import utils
+
+try:
+    from tkinter import TclError
+    import customtkinter as CTk
+    from CTkMessagebox import CTkMessagebox as CTkM
+except ImportError:
+    print("Please install the required modules using the command while in this directory: pip install -r requirements.txt")
+    exit(1)
+
 
 #This file should contains main program logic. Used to start the app and prompt the user for which operation they would like to perform.
 #In this file we do not implement the program functionalities, but only the communication with the user.

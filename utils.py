@@ -29,7 +29,7 @@ def setup_db() -> int:
                 ''')
         conn.commit()
     except sqlite3.Error as ex:
-        print("Error setting up database: ", ex)
+        print("Error setting up database: ", ex, flush=True)
         return 1
 
     return 0
@@ -46,7 +46,7 @@ def close_connection() -> int:
     try:
         conn.close()
     except sqlite3.Error as ex:
-        print("Error closing connection: ", ex)
+        print("Error closing connection: ", ex, flush=True)
         return 1
 
 # Common database queries 
@@ -66,7 +66,7 @@ def add_contact(name: str, phone: str, phone_prefix:str ) -> int:
         c.execute("INSERT INTO contacts (name, phone, phone_prefix) VALUES (?, ?, ?)", (name, phone, phone_prefix))
         conn.commit()
     except sqlite3.Error as ex:
-        print("Error adding contact: ", ex)
+        print("Error adding contact: ", ex, flush=True)
         return 1
 
 def delete_contact(name = "") -> int:
@@ -83,7 +83,7 @@ def delete_contact(name = "") -> int:
         c.execute("DELETE FROM contacts WHERE name = ?", (name,))
         conn.commit()
     except sqlite3.Error as ex:
-        print("Error deleting contact: ", ex)
+        print("Error deleting contact: ", ex, flush=True)
         return 1
 
 def search_contacts(name='', phone=''):
@@ -102,7 +102,7 @@ def search_contacts(name='', phone=''):
         results = c.fetchall()
         return results
     except sqlite3.Error as ex:
-        print("Error searching for contacts: ", ex)
+        print("Error searching for contacts: ", ex, flush=True)
         return 1
 
 def get_all_contacts():
@@ -119,5 +119,5 @@ def get_all_contacts():
         results = c.fetchall()
         return results
     except sqlite3.Error as ex:
-        print("Error retrieving contacts: ", ex)
+        print("Error retrieving contacts: ", ex, flush=True)
         return 1
